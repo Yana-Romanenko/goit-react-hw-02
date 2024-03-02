@@ -1,0 +1,26 @@
+.buttonBox {
+    margin-top: 40px;
+    margin-left: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: start;
+}
+
+.button {
+    border: 1px solid black;
+    background-color: Hex #d9dee1;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.25s;
+}
+
+button:hover {
+    border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+}
