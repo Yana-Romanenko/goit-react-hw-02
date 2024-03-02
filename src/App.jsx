@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from "react";
 
-import './App.css'
+import css from './App.module.css'
 import Description from './Description'
 import Feedback from './Feedback'
 import Notification from './Notification'
