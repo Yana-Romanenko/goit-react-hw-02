@@ -8,18 +8,15 @@ import Notification from './Notification'
 import Options from './Options'
 
 
-const savedGoodClicks =
-JSON.parse(window.localStorage.getItem("saved-good-clicks")) || 0;
-const savedNeutralClicks =
-JSON.parse(window.localStorage.getItem("saved-neutral-clicks")) || 0;
-const savedBadClicks =
-JSON.parse(window.localStorage.getItem("saved-bad-clicks")) || 0;
+const feedback = {
+  good: 0,
+  neutral: 0,
+  bad: 0,
+};
 
-export default function App() {
-const [feedbackType, setFeedbackTypes] = useState({
-  good: savedGoodClicks,
-  neutral: savedNeutralClicks,
-  bad: savedBadClicks,
+const App = () => {
+const [feedbackType, setFeedbackTypes] = useState(() => {
+ return JSON.parse(window.localStorage.getItem("feedback")) || feedback
 });
 
 const updateFeedback = (key) => {
@@ -48,16 +45,8 @@ const positivePercentage =
     : 0;
 
 useEffect(() => {
-  window.localStorage.setItem("saved-good-clicks", feedbackType.good);
-}, [feedbackType.good]);
-
-useEffect(() => {
-  window.localStorage.setItem("saved-neutral-clicks", feedbackType.neutral);
-}, [feedbackType.neutral]);
-
-useEffect(() => {
-  window.localStorage.setItem("saved-bad-clicks", feedbackType.bad);
-}, [feedbackType.bad]);
+  window.localStorage.setItem("feedback", JSON.stringify(feedbackType));
+}, [feedbackType]);
 
 return (
   <div className={css.box}>
@@ -95,3 +84,5 @@ return (
 function capitalize(string) {
 return string[0].toUpperCase() + string.slice(1);
 }
+
+export default App;
