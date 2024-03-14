@@ -15,74 +15,43 @@ const feedback = {
 };
 
 const App = () => {
-const [feedbackType, setFeedbackTypes] = useState(() => {
- return JSON.parse(window.localStorage.getItem("feedback")) || feedback
-});
-
-const updateFeedback = (key) => {
-  setFeedbackTypes((prevFeedback) => ({
-    ...prevFeedback,
-    [key]: prevFeedback[key] + 1,
-  }));
-};
-
-const totalFeedback =
-  feedbackType.good + feedbackType.neutral + feedbackType.bad;
-
-const resetFeedback = () => {
-  setFeedbackTypes({
-    good: 0,
-    neutral: 0,
-    bad: 0,
+  const [obj, setObj] = useState(() => {
+    return JSON.parse(window.localStorage.getItem("feedback")) || feedback;
   });
-};
 
-const positivePercentage =
-  totalFeedback > 0
-    ? Math.round(
-        ((feedbackType.good + feedbackType.neutral) / totalFeedback) * 100
-      )
-    : 0;
+  const [totalFeedback, setTotalFeedback] = useState(() => {
+    return obj.good + obj.neutral + obj.bad;
+  })
 
-useEffect(() => {
-  window.localStorage.setItem("feedback", JSON.stringify(feedbackType));
-}, [feedbackType]);
+  useEffect(() => {
+    window.localStorage.setItem("feedback", JSON.stringify(obj));
+  }, [obj]);
 
-return (
-  <div className={css.box}>
-    <Description
-      title="Sip Happens Café"
-      content="Please leave your feedback about our service by selecting one of the
-      options below."
-    />
-    <Options
-      onTrack={updateFeedback}
-      onReset={resetFeedback}
-      totalFeedback={totalFeedback}
-    />
-    <div className={css.container}>
-      {totalFeedback > 0 ? (
-        <div>
-          {Object.keys(feedbackType).map((key) => (
-            <Feedback
-              key={key}
-              value={feedbackType[key]}
-              name={capitalize(key)}
-            />
-          ))}
-          <p>Total: {totalFeedback}</p>
-          <p>Positive: {positivePercentage}%</p>
-        </div>
+  const updateFeedback = (key) => {
+    setObj({
+      ...obj,
+      [key]: obj[key] + 1,
+    });
+
+    setTotalFeedback(totalFeedback + 1);
+  };
+
+  const reset = () => {
+    setObj(feedback);
+    setTotalFeedback(0);
+  };
+
+  return (
+    <>
+      <Description />
+      <Options updateFeedback={updateFeedback} reset={reset} totalFeedback={totalFeedback}/>
+      {totalFeedback === 0 ? (
+        <Notification />
       ) : (
-        <Notification message="No feedback yet." />
+        <Feedback feedback={obj} />
       )}
-    </div>
-  </div>
-);
-}
-
-function capitalize(string) {
-return string[0].toUpperCase() + string.slice(1);
-}
+    </>
+  );
+};
 
 export default App;
