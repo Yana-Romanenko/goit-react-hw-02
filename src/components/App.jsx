@@ -41,6 +41,11 @@ const App = () => {
     setTotalFeedback(0);
   };
 
+
+  const total = feedback.good + feedback.neutral + feedback.bad;
+
+  const persentOfPositive = Math.round(((total - feedback.bad) / total) * 100);
+
   return (
     <>
       <Description />
@@ -48,7 +53,7 @@ const App = () => {
       {totalFeedback === 0 ? (
         <Notification />
       ) : (
-        <Feedback feedback={obj} />
+        <Feedback feedback={obj} total={total} positive={persentOfPositive}/>
       )}
     </>
   );
