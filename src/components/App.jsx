@@ -53,7 +53,7 @@ const App = () => {
       {totalFeedback === 0 ? (
         <Notification />
       ) : (
-        <Feedback feedback={feedback} total={total} positive={persentOfPositive}/>
+        <Feedback feedback={feedback} total={total} persentOfPositive={persentOfPositive}/>
       )}
     </>
   );
