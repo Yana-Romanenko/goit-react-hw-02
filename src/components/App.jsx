@@ -8,36 +8,36 @@ import Notification from './Notification'
 import Options from './Options'
 
 
-const feedback = {
+const initialFeedback = {
   good: 0,
   neutral: 0,
   bad: 0,
 };
 
 const App = () => {
-  const [obj, setObj] = useState(() => {
-    return JSON.parse(window.localStorage.getItem("feedback")) || feedback;
+  const [feedback, setFeedback] = useState(() => {
+    return JSON.parse(window.localStorage.getItem("feedback")) || initialFeedback;
   });
 
   const [totalFeedback, setTotalFeedback] = useState(() => {
-    return obj.good + obj.neutral + obj.bad;
+    return feedback.good + feedback.neutral + feedback.bad;
   })
 
   useEffect(() => {
-    window.localStorage.setItem("feedback", JSON.stringify(obj));
-  }, [obj]);
+    window.localStorage.setItem("feedback", JSON.stringify(initialFeedback));
+  }, [feedback]);
 
   const updateFeedback = (key) => {
-    setObj({
-      ...obj,
-      [key]: obj[key] + 1,
+    setFeedback({
+      ...feedback,
+      [key]: feedback[key] + 1,
     });
 
     setTotalFeedback(totalFeedback + 1);
   };
 
   const reset = () => {
-    setObj(feedback);
+    setFeedback(initialFeedback);
     setTotalFeedback(0);
   };
 
@@ -53,7 +53,7 @@ const App = () => {
       {totalFeedback === 0 ? (
         <Notification />
       ) : (
-        <Feedback feedback={obj} total={total} positive={persentOfPositive}/>
+        <Feedback feedback={feedback} total={total} positive={persentOfPositive}/>
       )}
     </>
   );
