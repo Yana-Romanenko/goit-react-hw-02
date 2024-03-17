@@ -16,15 +16,11 @@ const initialFeedback = {
 
 const App = () => {
   const [feedback, setFeedback] = useState(() => {
-    return JSON.parse(window.localStorage.getItem("feedback")) || initialFeedback;
+    return JSON.parse(window.localStorage.getItem("feedback")) || feedback;
   });
 
-  const [totalFeedback, setTotalFeedback] = useState(() => {
-    return feedback.good + feedback.neutral + feedback.bad;
-  })
-
   useEffect(() => {
-    window.localStorage.setItem("feedback", JSON.stringify(initialFeedback));
+    window.localStorage.setItem("feedback", JSON.stringify(feedback));
   }, [feedback]);
 
   const updateFeedback = (key) => {
@@ -32,25 +28,21 @@ const App = () => {
       ...feedback,
       [key]: feedback[key] + 1,
     });
-
-    setTotalFeedback(totalFeedback + 1);
   };
 
   const reset = () => {
     setFeedback(initialFeedback);
-    setTotalFeedback(0);
   };
-
 
   const total = feedback.good + feedback.neutral + feedback.bad;
 
-  const persentOfPositive = Math.round(((total - feedback.bad) / total) * 100);
+  const persentOfPositive = Math.round(((feedback.good + feedback.neutral) / total) * 100);;
 
   return (
     <>
       <Description />
-      <Options updateFeedback={updateFeedback} reset={reset} totalFeedback={totalFeedback}/>
-      {totalFeedback === 0 ? (
+      <Options updateFeedback={updateFeedback} reset={reset} totalFeedback={total}/>
+      {total === 0 ? (
         <Notification />
       ) : (
         <Feedback feedback={feedback} total={total} persentOfPositive={persentOfPositive}/>
