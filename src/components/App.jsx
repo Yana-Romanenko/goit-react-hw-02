@@ -16,7 +16,7 @@ const initialFeedback = {
 
 const App = () => {
   const [feedback, setFeedback] = useState(() => {
-    return JSON.parse(window.localStorage.getItem("feedback")) || feedback;
+    return JSON.parse(window.localStorage.getItem("feedback")) || initialFeedback;
   });
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const App = () => {
 
   const total = feedback.good + feedback.neutral + feedback.bad;
 
-  const persentOfPositive = Math.round(((feedback.good + feedback.neutral) / total) * 100);;
+  const percentOfPositive = Math.round(((feedback.good + feedback.neutral) / total) * 100);;
 
   return (
     <>
@@ -45,7 +45,7 @@ const App = () => {
       {total === 0 ? (
         <Notification />
       ) : (
-        <Feedback feedback={feedback} total={total} persentOfPositive={persentOfPositive}/>
+        <Feedback feedback={feedback} total={total} percentOfPositive={percentOfPositive}/>
       )}
     </>
   );
